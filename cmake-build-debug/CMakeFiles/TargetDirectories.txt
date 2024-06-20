@@ -1,3 +1,3 @@
-C:/Users/User/CLionProjects/nesa-dsa/cmake-build-debug/CMakeFiles/nesa_dsa.dir
-C:/Users/User/CLionProjects/nesa-dsa/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/User/CLionProjects/nesa-dsa/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/bellamy/Developer/CLionProjects/nesa-dsa/cmake-build-debug/CMakeFiles/nesa_dsa.dir
+/Users/bellamy/Developer/CLionProjects/nesa-dsa/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/bellamy/Developer/CLionProjects/nesa-dsa/cmake-build-debug/CMakeFiles/rebuild_cache.dir
