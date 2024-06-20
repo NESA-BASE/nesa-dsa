@@ -275,8 +275,7 @@ void registerAppointment(PatientLL& patientLl, DoctorLL& doctorLl, AppointmentLL
     Doctor* doctor = doctorLl.findDoctor(doctor_id);
     Appointment* appointment = appointmentLl.findAppointment(appointment_id);
 
-    if (patient != nullptr && doctor != nullptr && appointment != nullptr) {
-        isAppointmentNotValid(appointmentLl, appointment_id, doctor_id, patient_id);
+    if (patient == nullptr && doctor == nullptr && appointment == nullptr) {
         appointmentLl.addAppointment(appointment_id, patient_id, doctor_id, appointment_date);
     } else {
         cout << "Appointment already exists" << endl;
@@ -537,7 +536,8 @@ aDate:
 //                    goto doBVal;
 //                }
 
-                appointmentLl.addAppointment(id, patient_id, doctor_id, appointment_date);
+//                appointmentLl.addAppointment(id, patient_id, doctor_id, appointment_date);
+                registerAppointment(patientLl, doctorLl, appointmentLl,id, patient_id, doctor_id, appointment_date);
                 break;
             }
             case 4: {
