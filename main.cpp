@@ -212,9 +212,10 @@ bool isValidIntegerInput() {
 }
 
 // Function to validate the date
-bool valid_date(string dateString){
+bool valid_date(string dateString, int choice){
     // Check for valid format (dd/mm/yyyy)
     if (dateString.length() != 10 || dateString[2] != '/' || dateString[5] != '/') {
+        cout << "Invalid date. Please provide a valid date (DD/MM/YYYY).\n";
         return false;
     }
     // Extract day, month, and year from string
@@ -224,12 +225,46 @@ bool valid_date(string dateString){
 
     ss >> d >> ch >> m >> ch >> y;
     unsigned short monthLen[]={31,28,31,30,31,30,31,31,30,31,30,31};
-    if (!y || !m || !d || m>12)
+    if (!y || !m || !d || m>12) {
+        cout << "Invalid date. Please provide a valid date (DD/MM/YYYY).\n";
         return false;
+    }
     if (isLeapYear(y) && m==2)
         monthLen[1]++;
-    if (d>monthLen[m-1])
+    if (d>monthLen[m-1]) {
+        cout << "Invalid date. Please provide a valid date (DD/MM/YYYY).\n";
         return false;
+    }
+    // Check for valid year range (e.g., avoid dates before 1900 or far future)
+    if (y < 1950 || y > 2050) {
+        cout << "Invalid date. Please provide a date between years (1950 - 2050).\n";
+        return false;
+    }
+
+    // Check for DoB (past date): for patient registration
+    if (choice == 1) { // Check if it's patient registration
+        // Get today's date
+        time_t now = time(0);
+        tm* today = localtime(&now);
+        int currentYear = today->tm_year + 1900; // tm_year is years since 1900
+
+        // DoB must be in the past
+        if (y > currentYear || (y == currentYear && m > today->tm_mon + 1) || (y == currentYear && m == today->tm_mon + 1 && d > today->tm_mday)) {
+            cout << "Invalid date. DoB(Date of Birth) must be in the past.\n";
+            return false;
+        }
+    } else if (choice == 3) { // Check if it's appointment registration
+        // Appointment date must be in the future relative to today's date
+        time_t now = time(0);
+        tm* today = localtime(&now);
+        int currentYear = today->tm_year + 1900;
+        int currentMonth = today->tm_mon + 1; // tm_mon is 0-indexed
+
+        if (y < currentYear || (y == currentYear && m < currentMonth) || (y == currentYear && m == currentMonth && d <= today->tm_mday)) {
+            cout << "Invalid date. Appointment date must be in the future.\n";
+            return false;
+        }
+    }
     return true;
 }
 
@@ -318,8 +353,7 @@ int main() {
                 cout << "DoB: ";
                 getline(cin, dob);
 
-                if (!valid_date(dob)) {
-                    cout << "Invalid date. Please provide a valid date (DD/MM/YYYY).\n";
+                if (!valid_date(dob, choice)) {
                     goto doBVal;
                 }
 
@@ -404,7 +438,7 @@ int main() {
                         cout << "Invalid ID. Please enter a positive integer.\n";
                         continue;
                     } else if (!isDoctorIdExists(doctorLl, doctor_id)) {
-                        cout << "Doctor with ID " << id << " not found.\n";
+                        cout << "Doctor with ID " << doctor_id << " not found.\n";
                         continue;
                     }
                     isValidDID = true;
@@ -417,7 +451,7 @@ int main() {
                         cout << "Invalid ID. Please enter a positive integer.\n";
                         continue;
                     } else if (!isPatientIdExists(patientLl, patient_id)) {
-                        cout << "Patient with ID " << id << " not found.\n";
+                        cout << "Patient with ID " << patient_id << " not found.\n";
                         continue;
                     }
                     isValidPID = true;
@@ -427,8 +461,7 @@ int main() {
                 cout << "DATE: ";
                 getline(cin, appointment_date);
 
-                if (!valid_date(appointment_date)) {
-                    cout << "Invalid date. Please provide a valid date (DD/MM/YYYY).\n";
+                if (!valid_date(appointment_date, choice)) {
                     goto aDate;
                 }
 
