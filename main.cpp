@@ -1,6 +1,6 @@
 #include <iostream>
-#include <vector>
 #include <string>
+#include <regex>
 #include <sstream>
 #include <limits>
 #include <algorithm>
@@ -238,18 +238,20 @@ bool valid_date(string dateString, int choice){
         return false;
     }
     // Check for valid year range (e.g., avoid dates before 1900 or far future)
-    if (y < 1950 || y > 2030) {
+    if (y < 1950 || y > 2050) {
         cout << "Invalid date. Please provide a date between years (1950 - 2050).\n";
         return false;
     }
 
-    // Check for DoB (past date): for patient registration
-    if (choice == 1) { // Check if it's patient registration
-        // Get today's date
-        time_t now = time(0);
-        tm* today = localtime(&now);
-        int currentYear = today->tm_year + 1950; // tm_year is years since 1900
+    //Get the current date
+    time_t now = time(0);
+    tm* today = localtime(&now);
+    // Years since 1900
+    int currentYear = today->tm_year + 1900;
+    //Years is 0-based
+    int currentMonth = today->tm_mon - 1;
 
+    if (choice == 1) { // Check if it's patient registration
         // DoB must be in the past
         if (y > currentYear || (y == currentYear && m > today->tm_mon + 1) || (y == currentYear && m == today->tm_mon + 1 && d > today->tm_mday)) {
             cout << "Invalid date. DoB(Date of Birth) must be in the past.\n";
@@ -257,11 +259,6 @@ bool valid_date(string dateString, int choice){
         }
     } else if (choice == 3) { // Check if it's appointment registration
         // Appointment date must be in the future relative to today's date
-        time_t now = time(0);
-        tm* today = localtime(&now);
-        int currentYear = today->tm_year + 1950;
-        int currentMonth = today->tm_mon + 1; // tm_mon is 0-indexed
-
         if (y < currentYear || (y == currentYear && m < currentMonth) || (y == currentYear && m == currentMonth && d <= today->tm_mday)) {
             cout << "Invalid date. Appointment date must be in the future.\n";
             return false;
@@ -459,6 +456,8 @@ int main() {
                     isValidPID = true;
                 }
 
+                // Clear the input buffer
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 aDate:
                 cout << "DATE: ";
                 getline(cin, appointment_date);
