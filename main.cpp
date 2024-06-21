@@ -253,7 +253,7 @@ bool valid_date(string dateString, int choice){
 
     if (choice == 1) { // Check if it's patient registration
         // DoB must be in the past
-        if (y > currentYear || (y == currentYear && m > today->tm_mon + 1) || (y == currentYear && m == today->tm_mon + 1 && d > today->tm_mday)) {
+        if (y > currentYear || (y == currentYear && m > currentMonth) || (y == currentYear && m == currentMonth && d > today->tm_mday)) {
             cout << "Invalid date. DoB(Date of Birth) must be in the past.\n";
             return false;
         }
