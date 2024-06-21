@@ -53,6 +53,7 @@ public:
         Patient* newPatient = new Patient(patient_id, name, dob, gender);
         newPatient->next = head;
         head = newPatient;
+        cout << "Patient " << patient_id << " added successfully." << endl;
     }
 
     // Method to display all Patients
@@ -78,11 +79,11 @@ public:
     DoctorLL() : head(nullptr) {}
 
     // Method to add a new Doctor
-    bool addDoctor(int doctor_id, string name, string specialization) {
+    void addDoctor(int doctor_id, string name, string specialization) {
         Doctor* newDoctor = new Doctor(doctor_id, name, specialization);
         newDoctor->next = head;
         head = newDoctor;
-        return true;
+        cout << "Doctor " << doctor_id << " added successfully." << endl;
     }
 
     // Method to find a Doctor by ID
@@ -123,6 +124,7 @@ public:
         Appointment* newAppointment = new Appointment(appointment_id, patient_id, doctor_id, appointment_date);
         newAppointment->next = head;
         head = newAppointment;
+        cout << "Appointment " << appointment_id << " added successfully" << endl;
     }
 
     // Method to display all Appointments
@@ -197,7 +199,7 @@ void registerAppointment(AppointmentLL& appointmentLl, int appointment_id, int p
     if (appointmentLl.findAppointmentByDate(patient_id, doctor_id, appointment_date) == nullptr) {
         appointmentLl.addAppointment(appointment_id, patient_id, doctor_id, appointment_date);
     } else {
-        cout << "Appointment already exists" << endl;
+        cout << "Appointment already exists. Please schedule another appointment on a later date." << endl;
     }
 }
 
