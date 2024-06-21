@@ -238,7 +238,7 @@ bool valid_date(string dateString, int choice){
         return false;
     }
     // Check for valid year range (e.g., avoid dates before 1900 or far future)
-    if (y < 1950 || y > 2050) {
+    if (y < 1950 || y > 2030) {
         cout << "Invalid date. Please provide a date between years (1950 - 2050).\n";
         return false;
     }
@@ -248,7 +248,7 @@ bool valid_date(string dateString, int choice){
         // Get today's date
         time_t now = time(0);
         tm* today = localtime(&now);
-        int currentYear = today->tm_year + 1900; // tm_year is years since 1900
+        int currentYear = today->tm_year + 1950; // tm_year is years since 1900
 
         // DoB must be in the past
         if (y > currentYear || (y == currentYear && m > today->tm_mon + 1) || (y == currentYear && m == today->tm_mon + 1 && d > today->tm_mday)) {
@@ -259,7 +259,7 @@ bool valid_date(string dateString, int choice){
         // Appointment date must be in the future relative to today's date
         time_t now = time(0);
         tm* today = localtime(&now);
-        int currentYear = today->tm_year + 1900;
+        int currentYear = today->tm_year + 1950;
         int currentMonth = today->tm_mon + 1; // tm_mon is 0-indexed
 
         if (y < currentYear || (y == currentYear && m < currentMonth) || (y == currentYear && m == currentMonth && d <= today->tm_mday)) {
